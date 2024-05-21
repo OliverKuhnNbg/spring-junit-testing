@@ -1,5 +1,7 @@
 package de.adesso.unittestingapp.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -63,9 +65,18 @@ public class BookController {
 		return new ResponseEntity<ResponseDto>(responseObj, httpHeader, httpStatus ? HttpStatus.CREATED : HttpStatus.CONFLICT);
 	}
 	
+	@PostMapping("/get-all-books-by-author/{name}")
+	public List<Book> getBooksByAuthor(@PathVariable(value="name")String name) {
+		try {
+			List<Book> books = bookService.findBookByAuthor(name);
+			return books;
+		} catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@PostMapping("/get-book-by-id/{id}")
 	public Book getBookById(@PathVariable(value="id")Long id) {
-		System.out.println("test input: " + id);
 		try {
 			Book book = bookService.findBookById(id).get();
 			return book;

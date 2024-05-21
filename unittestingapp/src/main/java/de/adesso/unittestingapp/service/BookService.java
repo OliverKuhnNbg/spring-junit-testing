@@ -1,5 +1,6 @@
 package de.adesso.unittestingapp.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class BookService {
 	}
 	public Optional<Book>  findBookById(long id) {
 		return bookRep.findById(id);
+	}
+	public List<Book> findBookByAuthor(String name) {
+		return bookRep.findAllByAuthor(name);
 	}
 	public Book findBookByTitle(String title) {
 		return bookRep.findByTitle(title).get();
