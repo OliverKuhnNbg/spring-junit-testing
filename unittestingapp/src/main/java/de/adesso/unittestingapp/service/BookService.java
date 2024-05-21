@@ -27,7 +27,7 @@ public class BookService {
 		return bookRep.findByTitleAndAuthorAndIsbn(book.getTitle(), book.getAuthor(), book.getIsbn()).get();
 	}
 	public Optional<Book> findBookByIsbn(String isbn) {
-		return bookRep.findByIsbn(isbn).isPresent() ? bookRep.findByIsbn(isbn) : Optional.of(new Book());
+		return bookRep.findByIsbn(isbn);
 	}
 
 	public boolean isAlreadyStored(String isbn) {

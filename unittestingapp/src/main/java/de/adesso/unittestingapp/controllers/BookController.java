@@ -40,7 +40,7 @@ public class BookController {
 		boolean httpStatus = false;
 		
 		// checking if book already exists in db
-		if( bookService.isAlreadyStored(book.getIsbn()) ) {
+		if( !bookService.isAlreadyStored(book.getIsbn()) ) {
 			bookService.saveBook(book);
 			responseObj.setMsg("book added to db");
 			responseObj.setBook(book.getTitle() + " - " + book.getAuthor() + " - " + book.getIsbn());
@@ -57,7 +57,7 @@ public class BookController {
 		httpHeader.add("unique", uniqueId.toString());
 		
 		// return
-		return new ResponseEntity<ResponseDto>(responseObj, httpHeader, httpStatus ? HttpStatus.CREATED : HttpStatus.CONFLICT);
+		return new ResponseEntity<ResponseDto>(responseObj, httpStatus ? HttpStatus.CREATED : HttpStatus.CONFLICT);
 	}
 	
 	
