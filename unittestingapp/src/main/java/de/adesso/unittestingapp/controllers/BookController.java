@@ -36,13 +36,11 @@ public class BookController {
 	@PostMapping("/add-book-post")
 	public ResponseEntity<ResponseDto> addBookPost(@RequestBody Book book) {		
 
-		Book dbBook = bookService.findBookByIsbn(book.getIsbn());
-		System.out.println(dbBook.getTitle());
 		ResponseDto responseObj = new ResponseDto();
 		boolean httpStatus = false;
 		
 		// checking if book already exists in db
-		if(dbBook.getTitle() == null) {
+		if( bookService.isAlreadyStored(book.getIsbn()) ) {
 			bookService.saveBook(book);
 			responseObj.setMsg("book added to db");
 			responseObj.setBook(book.getTitle() + " - " + book.getAuthor() + " - " + book.getIsbn());
@@ -55,7 +53,7 @@ public class BookController {
 		
 		// add http header
 		HttpHeaders httpHeader = new HttpHeaders();
-		Long uniqueId = bookService.findBookByIsbn(book.getIsbn()).getId();
+		Long uniqueId = bookService.findBookByIsbn(book.getIsbn()).get().getId();
 		httpHeader.add("unique", uniqueId.toString());
 		
 		// return

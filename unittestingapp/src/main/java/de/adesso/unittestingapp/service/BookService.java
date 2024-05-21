@@ -1,5 +1,7 @@
 package de.adesso.unittestingapp.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +26,15 @@ public class BookService {
 	public Book findBookByTitleAuthorIsbn(Book book) {
 		return bookRep.findByTitleAndAuthorAndIsbn(book.getTitle(), book.getAuthor(), book.getIsbn()).get();
 	}
-	public Book findBookByIsbn(String isbn) {
-		return bookRep.findByIsbn(isbn).isPresent() ? bookRep.findByIsbn(isbn).get() : new Book();
+	public Optional<Book> findBookByIsbn(String isbn) {
+		return bookRep.findByIsbn(isbn).isPresent() ? bookRep.findByIsbn(isbn) : Optional.of(new Book());
 	}
-	
-	public boolean isBookAlreadyInDb(Book book) {
-		Book dbBook = findBookByIsbn(book.getIsbn());
-		if(dbBook.getTitle() == null) {
-			return false;
-		}
-		
-		return true;
+
+	public boolean isAlreadyStored(String isbn) {
+		Optional<Book> dbBook = findBookByIsbn(isbn);
+
+		if(dbBook.isPresent()) return true;
+
+		return false;
 	}
 }
