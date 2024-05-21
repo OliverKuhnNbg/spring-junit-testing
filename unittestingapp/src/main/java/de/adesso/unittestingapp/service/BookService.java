@@ -20,6 +20,9 @@ public class BookService {
 	public void deleteBook(Book book) {
 		bookRep.delete(book);
 	}
+	public Optional<Book>  findBookById(long id) {
+		return bookRep.findById(id);
+	}
 	public Book findBookByTitle(String title) {
 		return bookRep.findByTitle(title).get();
 	}

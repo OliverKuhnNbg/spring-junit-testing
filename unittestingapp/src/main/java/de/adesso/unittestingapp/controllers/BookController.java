@@ -5,11 +5,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import de.adesso.unittestingapp.dtos.ResponseDto;
 import de.adesso.unittestingapp.entity.Book;
@@ -61,6 +63,16 @@ public class BookController {
 		return new ResponseEntity<ResponseDto>(responseObj, httpHeader, httpStatus ? HttpStatus.CREATED : HttpStatus.CONFLICT);
 	}
 	
+	@PostMapping("/get-book-by-id/{id}")
+	public Book getBookById(@PathVariable(value="id")Long id) {
+		System.out.println("test input: " + id);
+		try {
+			Book book = bookService.findBookById(id).get();
+			return book;
+		} catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	@GetMapping("/delete-book-by-title")
 	public void deleteBookByTitle(@RequestParam(value="title")String title) {
